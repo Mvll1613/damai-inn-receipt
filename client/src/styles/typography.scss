@@ -1,0 +1,26 @@
+$typography: (
+  heading-1: (size: 48px, line: 48px, weight: 600),
+  heading-2: (size: 30px, line: 30px, weight: 600),
+  heading-3: (size: 24px, line: 28.8px, weight: 600),
+  heading-4: (size: 20px, line: 24px, weight: 600),
+
+  body-bold: (size: 16px, line: 24px, weight: 600),
+  body-medium: (size: 16px, line: 24px, weight: 500),
+  body-regular: (size: 16px, line: 24px, weight: 400),
+
+  small-bold: (size: 14px, line: 21px, weight: 600),
+  small-medium: (size: 14px, line: 21px, weight: 500),
+  small-regular: (size: 14px, line: 21px, weight: 400),
+
+  mini-bold: (size: 12px, line: 16px, weight: 600),
+  mini-medium: (size: 12px, line: 16px, weight: 500),
+  mini-regular: (size: 12px, line: 16px, weight: 400),
+);
+
+@mixin font($type) {
+  $style: map-get($typography, $type);
+
+  font-size: map-get($style, size);
+  line-height: map-get($style, line);
+  font-weight: map-get($style, weight);
+}
