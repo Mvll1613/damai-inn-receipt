@@ -1,24 +1,24 @@
 <template>
-  <div class="kwitansi-input-table">
-    <div class="kwitansi-input-table__add-btn">
-      <Button
-        icon="pi pi-plus"
-        size="small"
-        label="Tambah"
-        variant="outlined"
-        raised
-        @click="addTableRow"
-      />
-    </div>
+  <div class="add-row-btn">
+    <Button
+      icon="pi pi-plus"
+      size="small"
+      label="Tambah"
+      variant="outlined"
+      raised
+      @click="addTableRow"
+    />
+  </div>
 
+  <div class="kwitansi-input-table">
     <table>
       <tr>
         <th class="required">No. Kamar</th>
         <th class="required">Tipe Kamar</th>
         <th class="required">Check-In</th>
         <th class="required">Check-Out</th>
-        <th class="required">Harga per malam</th>
         <th>Durasi Inap</th>
+        <th class="required">Harga per malam</th>
         <th>
           <div class="extra-bed-header">
             <span class="required">Extra bed</span>
@@ -88,6 +88,9 @@
             </template>
           </InputMessage>
         </td>
+        <td id="stay-duration">
+          {{ data.stayDuration }} malam
+        </td>
         <td id="price-per-night">
           <InputMessage>
             <template #input-field>
@@ -102,9 +105,6 @@
               />
             </template>
           </InputMessage>
-        </td>
-        <td id="stay-duration">
-          {{ data.stayDuration }} malam
         </td>
         <td id="extra-beds">
           <InputMessage>
@@ -148,7 +148,6 @@
 
   const roomTypeOptions = constants.roomTypeOptions
 
-
   const props = defineProps({
     receiptData: Object
   })
@@ -169,16 +168,6 @@
     return diffDays > 0 ? diffDays : 0
   }
 
-  watch(receiptData, (newData) => {
-    if (!newData) return
-    
-    newData.forEach((item) => {
-      if (item.checkIn && item.checkOut) {
-        item.stayDuration = calculateStayDuration(item.checkIn, item.checkOut)
-      }
-    })
-  }, { deep: true })
-
   const addTableRow = () => {
     receiptData.value.push({
       roomNumber: '',
@@ -194,15 +183,31 @@
   const deleteTableRow = index => {
     receiptData.value.splice(index, 1)
   }
+
+  watch(receiptData, (newData) => {
+    if (!newData) return
+    
+    newData.forEach((item) => {
+      if (item.checkIn && item.checkOut) {
+        item.stayDuration = calculateStayDuration(item.checkIn, item.checkOut)
+      }
+    })
+  }, { deep: true })
 </script>
 
 <style lang="scss" scoped>
+  .add-row-btn {
+    @include flex-layout(column);
+    align-items: flex-end;
+    margin-bottom: 8px;
+  }
+
   .kwitansi-input-table {
     @include flex-layout(column, 8px);
-    align-items: flex-end;
+    overflow-x: auto;
 
     table {
-      min-width: 100%;
+      min-width: 1384px;
       border-collapse: collapse;
     }
 
@@ -225,10 +230,10 @@
         width: 15%;
       }
       &:nth-child(5) {
-        width: 17%;
+        width: 12%;
       }
       &:nth-child(6) {
-        width: 12%;
+        width: 17%;
       }
       &:nth-child(7) {
         width: 13%;

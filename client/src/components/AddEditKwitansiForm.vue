@@ -2,10 +2,10 @@
   <div class="add-edit-form">
     <div class="add-edit-form__input-field">
       <div class="add-edit-form__header">
-        <div class="kwitansi-number">
+        <!-- <div class="kwitansi-number">
           <span class="label">No. kwitansi:</span>
           <span class="value">D-000001</span>
-        </div>
+        </div> -->
   
         <div class="recipient-detail">
           <div class="recipient-detail__container">

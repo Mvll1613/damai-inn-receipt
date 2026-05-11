@@ -4,6 +4,7 @@
     modal
     :header="headerText"
     :closable="false"
+    :draggable="false"
     :style="{ width: '320px' }"
   >
     <div class="confirmation-modal">
