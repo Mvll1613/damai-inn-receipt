@@ -18,7 +18,7 @@
         <th class="required">Check-In</th>
         <th class="required">Check-Out</th>
         <th class="required">Harga per malam</th>
-        <th class="required">Durasi Inap</th>
+        <th>Durasi Inap</th>
         <th>
           <div class="extra-bed-header">
             <span class="required">Extra bed</span>
@@ -104,16 +104,7 @@
           </InputMessage>
         </td>
         <td id="stay-duration">
-          <InputMessage>
-            <template #input-field>
-              <InputNumber
-                v-model="data.stayDuration"
-                placeholder="Berapa malam?"
-                fluid
-                suffix=" malam"
-              />
-            </template>
-          </InputMessage>
+          {{ data.stayDuration }} malam
         </td>
         <td id="extra-beds">
           <InputMessage>
@@ -144,7 +135,7 @@
 </template>
 
 <script setup>
-  import { computed, toRef } from 'vue'
+  import { computed, toRef, watch } from 'vue'
   import constants from '@/constants'
   
   import Select from 'primevue/select'
@@ -166,6 +157,28 @@
 
   const isBtnDisabled = computed(() => receiptData.value?.length === 1)
 
+  const calculateStayDuration = (checkIn, checkOut) => {
+    if (!checkIn || !checkOut) return 0
+    
+    const startDate = new Date(checkIn)
+    const endDate = new Date(checkOut)
+    
+    const diffTime = endDate - startDate
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    
+    return diffDays > 0 ? diffDays : 0
+  }
+
+  watch(receiptData, (newData) => {
+    if (!newData) return
+    
+    newData.forEach((item) => {
+      if (item.checkIn && item.checkOut) {
+        item.stayDuration = calculateStayDuration(item.checkIn, item.checkOut)
+      }
+    })
+  }, { deep: true })
+
   const addTableRow = () => {
     receiptData.value.push({
       roomNumber: '',
@@ -173,7 +186,7 @@
       checkIn: '',
       checkOut: '',
       pricePerNight: '',
-      stayDuration: '',
+      stayDuration: 0,
       extraBeds: ''
     })
   }

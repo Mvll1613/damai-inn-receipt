@@ -56,7 +56,7 @@
         checkIn: '',
         checkOut: '',
         pricePerNight: '',
-        stayDuration: '',
+        stayDuration: 0,
         extraBeds: ''
       }
     ]
