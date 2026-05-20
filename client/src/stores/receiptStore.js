@@ -2,14 +2,15 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import httpRequest from '@/api/http-methods'
 import apiPath from '@/api/api-path'
+import formatQuery from '@/utils/query'
 
 export const useReceiptStore = defineStore('receipt', () => {
   const receiptList = ref([])
 
-  const getReceiptList = async () => {
+  const getReceiptList = async (query = {}) => {
     try {
-      const res = await httpRequest.getDataViaApi(apiPath.getReceipt)
-      receiptList.value = res
+      const res = await httpRequest.getDataViaApi(apiPath.getReceipt + formatQuery(query))
+      receiptList.value = res?.data
     } catch (error) {
       console.error(error)
     }
