@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LandingPage from '@/pages/LandingPage.vue'
 import KwitansiManagementLayout from '@/layout/KwitansiManagementLayout.vue'
 import AddEditKwitansiPage from '@/pages/AddEditKwitansiPage.vue'
+import KwitansiListPage from '@/pages/KwitansiListPage.vue'
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
         path: 'add',
         name: 'AddEditKwitansiPage',
         component: AddEditKwitansiPage,
+      },
+      {
+        path: 'list',
+        name: 'KwitansiListPage',
+        component: KwitansiListPage,
       }
     ]
   }

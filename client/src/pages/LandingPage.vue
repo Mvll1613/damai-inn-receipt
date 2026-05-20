@@ -5,21 +5,15 @@
     <div class="landing-page__content">
       <span class="title">Halo, silakan pilih menu berikut:</span>
       <Button
-        variant="outlined"
         :raised="true"
         @click="goToAddEditKwitansiPage"
       >
         <span class="button-label">Buat kwitansi</span>
       </Button>
       <Button
-        severity="secondary"
-        disabled
+        variant="outlined"
         :raised="true"
-        :pt="{
-          root: {
-            style: 'cursor: not-allowed'
-          }
-        }"
+        @click="goToKwitansiListPage"
       >
         <span class="button-label">Lihat kwitansi</span>
       </Button>
@@ -39,7 +33,11 @@
   const router = useRouter()
 
   const goToAddEditKwitansiPage = () => {
-    router.push({ name: 'AddEditKwitansiPage' })
+    router.push('/kwitansi/add')
+  }
+  
+  const goToKwitansiListPage = () => {
+    router.push({ name: 'KwitansiListPage' })
   }
 </script>
 
