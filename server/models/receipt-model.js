@@ -10,6 +10,13 @@ const Receipt = {
         return result.rows
     },
 
+    // Get total count of receipts
+    async getCount () {
+        const query = 'SELECT COUNT(*) FROM receipts'
+        const result = await pool.query(query)
+        return parseInt(result.rows[0].count)
+    },
+
     // Insert receipt
     async addReceipt (receipt) {
         const { createdDate, guestName, receiptData } = receipt

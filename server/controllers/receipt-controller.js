@@ -10,11 +10,19 @@ const receiptController = {
 
         try {
             const receipts = await Receipt.getAll(sort, pageNum, limitNum)
+            const totalRecords = await Receipt.getCount()
+            const pagination = {
+                page: pageNum,
+                limit: limitNum,
+                totalRecords: totalRecords
+            }
+
             res.status(200).json({
                 code: 200,
                 success: true,
                 message: 'OK',
-                data: receipts
+                data: receipts,
+                pagination
             })
         } catch (error) {
             next(error)

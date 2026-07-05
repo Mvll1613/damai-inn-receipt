@@ -6,11 +6,13 @@ import formatQuery from '@/utils/query'
 
 export const useReceiptStore = defineStore('receipt', () => {
   const receiptList = ref([])
+  const receiptPagination = ref({})
 
   const getReceiptList = async (query = {}) => {
     try {
       const res = await httpRequest.getDataViaApi(apiPath.getReceipt + formatQuery(query))
       receiptList.value = res?.data
+      receiptPagination.value = res?.pagination
     } catch (error) {
       console.error(error)
     }
