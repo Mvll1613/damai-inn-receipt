@@ -2,18 +2,56 @@ import pool from '../db-connect.js'
 
 const Receipt = {
     // Get all receipts
-    async getAll (sort = 'created_date', page = 1, limit = 10) {
+    async getAll (sort = 'created_date', page = 1, limit = 10, guestName = '', createdDate = '') {
         const offset = (page - 1) * limit
 
-        const query = 'SELECT * FROM receipts ORDER BY $1 DESC LIMIT $2 OFFSET $3'
-        const result = await pool.query(query, [sort, limit, offset])
+        let query = 'SELECT * FROM receipts'
+        const params = []
+        const conditions = []
+
+        if (guestName) {
+            console.log('test')
+            conditions.push('guest_name ILIKE $' + (params.length + 1))
+            params.push(`%${guestName}%`)
+        }
+
+        if (createdDate) {
+            conditions.push('created_date::text ILIKE $' + (params.length + 1))
+            params.push(`%${createdDate}%`)
+        }
+
+        if (conditions.length > 0) {
+            query += ' WHERE ' + conditions.join(' AND ')
+        }
+
+        query += ' ORDER BY $' + (params.length + 1) + ' DESC LIMIT $' + (params.length + 2) + ' OFFSET $' + (params.length + 3)
+        params.push(sort, limit, offset)
+
+        const result = await pool.query(query, params)
         return result.rows
     },
 
     // Get total count of receipts
-    async getCount () {
-        const query = 'SELECT COUNT(*) FROM receipts'
-        const result = await pool.query(query)
+    async getCount (guestName = '', createdDate = '') {
+        let query = 'SELECT COUNT(*) FROM receipts'
+        const params = []
+        const conditions = []
+
+        if (guestName) {
+            conditions.push('guest_name ILIKE $' + (params.length + 1))
+            params.push(`%${guestName}%`)
+        }
+
+        if (createdDate) {
+            conditions.push('created_date::text ILIKE $' + (params.length + 1))
+            params.push(`%${createdDate}%`)
+        }
+
+        if (conditions.length > 0) {
+            query += ' WHERE ' + conditions.join(' AND ')
+        }
+
+        const result = await pool.query(query, params)
         return parseInt(result.rows[0].count)
     },
 

@@ -3,14 +3,14 @@ import Receipt from '../models/receipt-model.js'
 const receiptController = {
     // GET all receipts
     async getAll (req, res, next) {
-        const { sort, page, limit } = req.query
+        const { sort, page, limit, guestName, createdDate } = req.query
 
         const pageNum = parseInt(page) || 1
         const limitNum = parseInt(limit) || 10
 
         try {
-            const receipts = await Receipt.getAll(sort, pageNum, limitNum)
-            const totalRecords = await Receipt.getCount()
+            const receipts = await Receipt.getAll(sort, pageNum, limitNum, guestName, createdDate)
+            const totalRecords = await Receipt.getCount(guestName, createdDate)
             const pagination = {
                 page: pageNum,
                 limit: limitNum,

@@ -10,7 +10,8 @@
         @click="handleCreateReceipt"
       />
     </div>
-    <KwitansiList />
+
+    <KwitansiList @on-filter-change="fetchReceiptList" />
 
     <Paginator
       v-if="receiptPagination?.totalRecords > 10"
@@ -50,12 +51,21 @@
     pagination.page = event.page + 1
   }
 
+  const fetchReceiptList = (filters) => {
+    let payload = {
+      ...pagination,
+      ...filters
+    }
+
+    getReceiptList(payload)
+  }
+
   watch(() => pagination.page, () => {
-    getReceiptList(pagination)
+    fetchReceiptList()
   })
 
   onMounted(() => {
-    getReceiptList(pagination)
+    fetchReceiptList()
   })
 </script>
 
